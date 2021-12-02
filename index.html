@@ -1,0 +1,383 @@
+<html>
+    <body>
+        <div>
+			<p>Bank DApp</p>
+  			<p>Account Connected: <a id='coinbase'></a></p>
+			<p>Actual Block Number: <a id='blockNumber'></a></p>
+			<p>Contract Address: <a id='address'></a></p>
+			<p>Restaurant List:</p>
+			<a id='restaurants'></a>
+	    </div>
+		
+		<!-- To use web3, jquery and materialize (for toast warnings) libs -->
+		<script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.36/dist/web3.min.js"></script>
+		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+        <script>
+			var contract;
+            $(document).ready(function(){
+				// making conection with blockchain
+				if (typeof web3 !== 'undefined') {
+                    // Use MetaMask's provider
+                    web3 = new Web3(web3.currentProvider);
+
+                } 
+				// else {
+			    // // Use localhost provider or some IP address
+                //     web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
+                // }
+
+				/////////////////////////////
+				// To see on console
+				// web3.eth.getAccounts().then(console.log);
+				// web3.eth.getBlockNumber().then(console.log);
+				// web3.eth.isMining().then(console.log);
+
+				// Create variables to use on html page
+				web3.eth.getCoinbase().then(function(coinbase){
+					$('#coinbase').html(coinbase);
+				})
+
+				// Create variables to use on html page
+				web3.eth.getBlockNumber().then(function(blockNumber){
+					$('#blockNumber').html(blockNumber);
+				})
+
+				/////////////////////////////
+				// Sample of a contract's address deployed in Ropsten test network
+				 var address = "0x0cE41e7a905daB47A31927dC65E94994bfCAF436"
+				// Deployed Contract's Adress, substitute here with your contract's address
+				// var address = "0xB40dCa2c4b6B84C1131eBDdCf3df6D2f294B0ba8"
+				$('#address').html(address)
+				// Deployed Contract's ABI
+				var abi = [
+					{
+						"inputs": [
+							{
+								"internalType": "uint256",
+								"name": "_restaurantId",
+								"type": "uint256"
+							},
+							{
+								"internalType": "string",
+								"name": "_name",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "_description",
+								"type": "string"
+							},
+							{
+								"internalType": "uint256",
+								"name": "_price",
+								"type": "uint256"
+							}
+						],
+						"name": "addMenuItem",
+						"outputs": [],
+						"stateMutability": "nonpayable",
+						"type": "function"
+					},
+					{
+						"inputs": [
+							{
+								"internalType": "string",
+								"name": "_name",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "_location",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "_url",
+								"type": "string"
+							}
+						],
+						"name": "addRestaurant",
+						"outputs": [],
+						"stateMutability": "nonpayable",
+						"type": "function"
+					},
+					{
+						"inputs": [
+							{
+								"internalType": "uint256",
+								"name": "_restaurantId",
+								"type": "uint256"
+							}
+						],
+						"name": "getRestaurantMenu",
+						"outputs": [
+							{
+								"components": [
+									{
+										"internalType": "uint256",
+										"name": "id",
+										"type": "uint256"
+									},
+									{
+										"internalType": "uint256",
+										"name": "restaurantId",
+										"type": "uint256"
+									},
+									{
+										"internalType": "string",
+										"name": "name",
+										"type": "string"
+									},
+									{
+										"internalType": "string",
+										"name": "description",
+										"type": "string"
+									},
+									{
+										"internalType": "uint256",
+										"name": "price",
+										"type": "uint256"
+									}
+								],
+								"internalType": "struct Delivery.MenuItem[]",
+								"name": "",
+								"type": "tuple[]"
+							}
+						],
+						"stateMutability": "view",
+						"type": "function"
+					},
+					{
+						"inputs": [],
+						"name": "getRestaurants",
+						"outputs": [
+							{
+								"components": [
+									{
+										"internalType": "uint256",
+										"name": "id",
+										"type": "uint256"
+									},
+									{
+										"internalType": "string",
+										"name": "name",
+										"type": "string"
+									},
+									{
+										"internalType": "string",
+										"name": "location",
+										"type": "string"
+									},
+									{
+										"internalType": "uint256",
+										"name": "menuCount",
+										"type": "uint256"
+									},
+									{
+										"internalType": "string",
+										"name": "imageURL",
+										"type": "string"
+									}
+								],
+								"internalType": "struct Delivery.Restaurant[]",
+								"name": "",
+								"type": "tuple[]"
+							}
+						],
+						"stateMutability": "view",
+						"type": "function"
+					},
+					{
+						"inputs": [
+							{
+								"internalType": "uint256",
+								"name": "",
+								"type": "uint256"
+							}
+						],
+						"name": "menuItens",
+						"outputs": [
+							{
+								"internalType": "uint256",
+								"name": "id",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "restaurantId",
+								"type": "uint256"
+							},
+							{
+								"internalType": "string",
+								"name": "name",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "description",
+								"type": "string"
+							},
+							{
+								"internalType": "uint256",
+								"name": "price",
+								"type": "uint256"
+							}
+						],
+						"stateMutability": "view",
+						"type": "function"
+					},
+					{
+						"inputs": [],
+						"name": "menuItensCount",
+						"outputs": [
+							{
+								"internalType": "uint256",
+								"name": "",
+								"type": "uint256"
+							}
+						],
+						"stateMutability": "view",
+						"type": "function"
+					},
+					{
+						"inputs": [
+							{
+								"internalType": "uint256",
+								"name": "",
+								"type": "uint256"
+							}
+						],
+						"name": "restaurants",
+						"outputs": [
+							{
+								"internalType": "uint256",
+								"name": "id",
+								"type": "uint256"
+							},
+							{
+								"internalType": "string",
+								"name": "name",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "location",
+								"type": "string"
+							},
+							{
+								"internalType": "uint256",
+								"name": "menuCount",
+								"type": "uint256"
+							},
+							{
+								"internalType": "string",
+								"name": "imageURL",
+								"type": "string"
+							}
+						],
+						"stateMutability": "view",
+						"type": "function"
+					},
+					{
+						"inputs": [],
+						"name": "restaurantsCount",
+						"outputs": [
+							{
+								"internalType": "uint256",
+								"name": "",
+								"type": "uint256"
+							}
+						],
+						"stateMutability": "view",
+						"type": "function"
+					}
+				];
+				
+				// connect, via web3, your variable contract to the deployed contract, using his ABI and address	
+				contract = new web3.eth.Contract(abi, address);
+				getRestaurants();
+				// getRestaurantMenu(1);
+
+				a = contract.methods.getRestaurants().call().then(function(res){
+					return res
+				})
+                // contract.methods.restaurants(1).call().then(function(res)
+                // {
+                //     console.log(res);
+                // })
+			})
+
+			function getRestaurants(){
+				contract.methods.getRestaurants().call().then(function(res){
+					li = []
+					for(i=0;i< res.length;i++){
+						item = res[i]
+						li.push("id = " + item.id + " name = " + item.name + " location = "+ item.location + " image = " + item.imageURL);
+						// li.push(item);
+					}
+					console.log(li);
+					$("#restaurants").text(li);
+					console.log(res)
+				})
+			}
+
+			function getRestaurantMenu(id){
+				contract.methods.getRestaurantMenu(id).call().then(function(res){
+					return console.log(res);
+				})
+			}
+
+			// $('#deposit').click(function()
+			// {
+			// 	M.toast({html:'Transaction received and will be mined!'});
+			// 	console.log("Transaction received and will be mined!");
+			// 	var amt = 0;
+			// 	amt = parseInt($('#amount').val());
+
+			// 	web3.eth.getAccounts().then(function(accounts)
+			// 	{
+			// 		var acc = accounts[0];
+			// 		return contract.methods.deposit(amt).send({from: acc});
+			// 	}).then(function(tx)
+			// 	{
+			// 		console.log(tx);
+			// 		if(!alert("Transaction mined at block " + tx.blockNumber + "\nBlockHash = " + tx.blockHash)){window.location.reload();}
+			// 	}).catch(function(tx)
+			// 	{
+			// 		if (tx){
+			// 			alert('Some error has occurred, go to console!')
+			// 		}
+			// 		console.log(tx);
+			// 		M.toast({html:tx})
+			// 	})
+			// })
+
+			// $('#withdraw').click(function()
+			// {
+			// 	M.toast({html:'Transaction received and will be mined!'});
+			// 	console.log("Transaction received and will be mined!");
+			// 	var amt = 0;
+			// 	amt = parseInt($('#amount').val());
+
+			// 	web3.eth.getAccounts().then(function(accounts)
+			// 	{
+			// 		var acc = accounts[0];
+			// 		return contract.methods.withdraw(amt).send({from: acc});
+			// 	}).then(function(tx)
+			// 	{
+			// 		console.log(tx);
+			// 		if(!alert("Transaction mined at block " + tx.blockNumber + "\nBlockHash = " + tx.blockHash)){window.location.reload();}
+			// 	}).catch(function(tx)
+			// 	{
+			// 		if (tx){
+			// 			alert('Some error has occurred, go to console!')
+			// 		}
+			// 		console.log(tx);
+			// 		M.toast({html:tx})
+			// 	})
+			// })
+        </script>
+    </body>
+</html>
