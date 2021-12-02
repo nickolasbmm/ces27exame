@@ -46,254 +46,284 @@
 
 				/////////////////////////////
 				// Sample of a contract's address deployed in Ropsten test network
-				 var address = "0x0cE41e7a905daB47A31927dC65E94994bfCAF436"
+				 var address = "0x342aD738a91dAf5A1143Fff731Af16265b3cE2FC"
 				// Deployed Contract's Adress, substitute here with your contract's address
 				// var address = "0xB40dCa2c4b6B84C1131eBDdCf3df6D2f294B0ba8"
 				$('#address').html(address)
 				// Deployed Contract's ABI
-				var abi = [
+				var abi =[
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_restaurantId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "_name",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_description",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_price",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "_url",
+				"type": "string"
+			}
+		],
+		"name": "addMenuItem",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_name",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_location",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_description",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_url",
+				"type": "string"
+			}
+		],
+		"name": "addRestaurant",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_restaurantId",
+				"type": "uint256"
+			}
+		],
+		"name": "getRestaurantMenu",
+		"outputs": [
+			{
+				"components": [
 					{
-						"inputs": [
-							{
-								"internalType": "uint256",
-								"name": "_restaurantId",
-								"type": "uint256"
-							},
-							{
-								"internalType": "string",
-								"name": "_name",
-								"type": "string"
-							},
-							{
-								"internalType": "string",
-								"name": "_description",
-								"type": "string"
-							},
-							{
-								"internalType": "uint256",
-								"name": "_price",
-								"type": "uint256"
-							}
-						],
-						"name": "addMenuItem",
-						"outputs": [],
-						"stateMutability": "nonpayable",
-						"type": "function"
+						"internalType": "uint256",
+						"name": "id",
+						"type": "uint256"
 					},
 					{
-						"inputs": [
-							{
-								"internalType": "string",
-								"name": "_name",
-								"type": "string"
-							},
-							{
-								"internalType": "string",
-								"name": "_location",
-								"type": "string"
-							},
-							{
-								"internalType": "string",
-								"name": "_url",
-								"type": "string"
-							}
-						],
-						"name": "addRestaurant",
-						"outputs": [],
-						"stateMutability": "nonpayable",
-						"type": "function"
+						"internalType": "uint256",
+						"name": "restaurantId",
+						"type": "uint256"
 					},
 					{
-						"inputs": [
-							{
-								"internalType": "uint256",
-								"name": "_restaurantId",
-								"type": "uint256"
-							}
-						],
-						"name": "getRestaurantMenu",
-						"outputs": [
-							{
-								"components": [
-									{
-										"internalType": "uint256",
-										"name": "id",
-										"type": "uint256"
-									},
-									{
-										"internalType": "uint256",
-										"name": "restaurantId",
-										"type": "uint256"
-									},
-									{
-										"internalType": "string",
-										"name": "name",
-										"type": "string"
-									},
-									{
-										"internalType": "string",
-										"name": "description",
-										"type": "string"
-									},
-									{
-										"internalType": "uint256",
-										"name": "price",
-										"type": "uint256"
-									}
-								],
-								"internalType": "struct Delivery.MenuItem[]",
-								"name": "",
-								"type": "tuple[]"
-							}
-						],
-						"stateMutability": "view",
-						"type": "function"
+						"internalType": "string",
+						"name": "name",
+						"type": "string"
 					},
 					{
-						"inputs": [],
-						"name": "getRestaurants",
-						"outputs": [
-							{
-								"components": [
-									{
-										"internalType": "uint256",
-										"name": "id",
-										"type": "uint256"
-									},
-									{
-										"internalType": "string",
-										"name": "name",
-										"type": "string"
-									},
-									{
-										"internalType": "string",
-										"name": "location",
-										"type": "string"
-									},
-									{
-										"internalType": "uint256",
-										"name": "menuCount",
-										"type": "uint256"
-									},
-									{
-										"internalType": "string",
-										"name": "imageURL",
-										"type": "string"
-									}
-								],
-								"internalType": "struct Delivery.Restaurant[]",
-								"name": "",
-								"type": "tuple[]"
-							}
-						],
-						"stateMutability": "view",
-						"type": "function"
+						"internalType": "string",
+						"name": "description",
+						"type": "string"
 					},
 					{
-						"inputs": [
-							{
-								"internalType": "uint256",
-								"name": "",
-								"type": "uint256"
-							}
-						],
-						"name": "menuItens",
-						"outputs": [
-							{
-								"internalType": "uint256",
-								"name": "id",
-								"type": "uint256"
-							},
-							{
-								"internalType": "uint256",
-								"name": "restaurantId",
-								"type": "uint256"
-							},
-							{
-								"internalType": "string",
-								"name": "name",
-								"type": "string"
-							},
-							{
-								"internalType": "string",
-								"name": "description",
-								"type": "string"
-							},
-							{
-								"internalType": "uint256",
-								"name": "price",
-								"type": "uint256"
-							}
-						],
-						"stateMutability": "view",
-						"type": "function"
+						"internalType": "uint256",
+						"name": "price",
+						"type": "uint256"
 					},
 					{
-						"inputs": [],
-						"name": "menuItensCount",
-						"outputs": [
-							{
-								"internalType": "uint256",
-								"name": "",
-								"type": "uint256"
-							}
-						],
-						"stateMutability": "view",
-						"type": "function"
-					},
-					{
-						"inputs": [
-							{
-								"internalType": "uint256",
-								"name": "",
-								"type": "uint256"
-							}
-						],
-						"name": "restaurants",
-						"outputs": [
-							{
-								"internalType": "uint256",
-								"name": "id",
-								"type": "uint256"
-							},
-							{
-								"internalType": "string",
-								"name": "name",
-								"type": "string"
-							},
-							{
-								"internalType": "string",
-								"name": "location",
-								"type": "string"
-							},
-							{
-								"internalType": "uint256",
-								"name": "menuCount",
-								"type": "uint256"
-							},
-							{
-								"internalType": "string",
-								"name": "imageURL",
-								"type": "string"
-							}
-						],
-						"stateMutability": "view",
-						"type": "function"
-					},
-					{
-						"inputs": [],
-						"name": "restaurantsCount",
-						"outputs": [
-							{
-								"internalType": "uint256",
-								"name": "",
-								"type": "uint256"
-							}
-						],
-						"stateMutability": "view",
-						"type": "function"
+						"internalType": "string",
+						"name": "imageURL",
+						"type": "string"
 					}
-				];
+				],
+				"internalType": "struct Delivery.MenuItem[]",
+				"name": "",
+				"type": "tuple[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "getRestaurants",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "uint256",
+						"name": "id",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "name",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "location",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "description",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "imageURL",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "menuCount",
+						"type": "uint256"
+					}
+				],
+				"internalType": "struct Delivery.Restaurant[]",
+				"name": "",
+				"type": "tuple[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "menuItens",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "id",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "restaurantId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "name",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "description",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "price",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "imageURL",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "menuItensCount",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "restaurants",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "id",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "name",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "location",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "description",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "imageURL",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "menuCount",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "restaurantsCount",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}
+];
 				
 				// connect, via web3, your variable contract to the deployed contract, using his ABI and address	
 				contract = new web3.eth.Contract(abi, address);
