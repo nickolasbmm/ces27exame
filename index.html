@@ -186,9 +186,9 @@
 				/////////////////////////////
 				// Sample of a contract's address deployed in Ropsten test network
 				//  var address = "0xAdbe5b018CA9C10CC46f45fb9B06Fb454B4e3613"
-				 var address = "0x28AFe8b25402d4Ddfc6847cB5cd319Cc01E3Df41" // local blockchain
+				 var address = "0x0F320405fFcf2D4E815588DB382e6e449e546C1c" // local blockchain
 				// Deployed Contract's Adress, substitute here with your contract's address
-				// var address = "0xB40dCa2c4b6B84C1131eBDdCf3df6D2f294B0ba8"
+				// var address = "0x28AFe8b25402d4Ddfc6847cB5cd319Cc01E3Df41"
 				$('#address').html(address)
 				// Deployed Contract's ABI
 				var abi =[
@@ -257,6 +257,93 @@
 		"inputs": [
 			{
 				"internalType": "uint256",
+				"name": "_menuItemId",
+				"type": "uint256"
+			}
+		],
+		"name": "deleteMenuItem",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_restaurantId",
+				"type": "uint256"
+			}
+		],
+		"name": "deleteRestaurant",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_menuItemId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "_name",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_price",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "_url",
+				"type": "string"
+			}
+		],
+		"name": "editMenuItem",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_restaurantId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "_name",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_location",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_description",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_url",
+				"type": "string"
+			}
+		],
+		"name": "editRestaurant",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
 				"name": "_restaurantId",
 				"type": "uint256"
 			}
@@ -294,6 +381,11 @@
 						"internalType": "string",
 						"name": "imageURL",
 						"type": "string"
+					},
+					{
+						"internalType": "bool",
+						"name": "exists",
+						"type": "bool"
 					}
 				],
 				"internalType": "struct Delivery.MenuItem[]",
@@ -393,6 +485,11 @@
 				"internalType": "string",
 				"name": "imageURL",
 				"type": "string"
+			},
+			{
+				"internalType": "bool",
+				"name": "exists",
+				"type": "bool"
 			}
 		],
 		"stateMutability": "view",
@@ -463,6 +560,19 @@
 	{
 		"inputs": [],
 		"name": "restaurantsCount",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "restaurantsCountExists",
 		"outputs": [
 			{
 				"internalType": "uint256",
