@@ -12,7 +12,7 @@
 			height: 500px;
 			max-height: 500px;
 			margin-bottom: 10px;
-			overflow:scroll;
+			overflow:auto;
 			-webkit-overflow-scrolling: touch;
 		}
 
@@ -103,6 +103,7 @@
 				// making conection with blockchain
 				if (typeof web3 !== 'undefined') {
                     // Use MetaMask's provider
+					web3.currentProvider.enable();
                     web3 = new Web3(web3.currentProvider);
 
                 } 
@@ -114,9 +115,9 @@
 
 				/////////////////////////////
 				// To see on console
-				// web3.eth.getAccounts().then(console.log);
-				// web3.eth.getBlockNumber().then(console.log);
-				// web3.eth.isMining().then(console.log);
+				web3.eth.getAccounts().then(console.log);
+				web3.eth.getBlockNumber().then(console.log);
+				web3.eth.isMining().then(console.log);
 
 				// Create variables to use on html page
 				web3.eth.getCoinbase().then(function(coinbase){
