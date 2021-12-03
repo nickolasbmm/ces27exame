@@ -107,10 +107,10 @@
 
                 } 
 
-				// else {
-			    // // Use localhost provider or some IP address
-                //     web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
-                // }
+				else {
+			    // Use localhost provider or some IP address
+                    web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
+                }
 
 				/////////////////////////////
 				// To see on console
@@ -130,7 +130,7 @@
 
 				/////////////////////////////
 				// Sample of a contract's address deployed in Ropsten test network
-				 var address = "0x342aD738a91dAf5A1143Fff731Af16265b3cE2FC"
+				 var address = "0xAdbe5b018CA9C10CC46f45fb9B06Fb454B4e3613"
 				// Deployed Contract's Adress, substitute here with your contract's address
 				// var address = "0xB40dCa2c4b6B84C1131eBDdCf3df6D2f294B0ba8"
 				$('#address').html(address)
@@ -283,6 +283,11 @@
 						"internalType": "uint256",
 						"name": "menuCount",
 						"type": "uint256"
+					},
+					{
+						"internalType": "bool",
+						"name": "exists",
+						"type": "bool"
 					}
 				],
 				"internalType": "struct Delivery.Restaurant[]",
@@ -389,6 +394,11 @@
 				"internalType": "uint256",
 				"name": "menuCount",
 				"type": "uint256"
+			},
+			{
+				"internalType": "bool",
+				"name": "exists",
+				"type": "bool"
 			}
 		],
 		"stateMutability": "view",

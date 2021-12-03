@@ -12,51 +12,60 @@ contract Delivery {
         string name;
         string description;
         uint price;
+        string imageURL;
     }
 
     struct Restaurant {
         uint id;
         string name;
         string location;
-        uint menuCount;
+        string description;
         string imageURL;
+        uint menuCount;
+        bool exists;
     }
 
     mapping(uint => Restaurant) public restaurants;
     mapping(uint => MenuItem) public menuItens;
 
-    uint public restaurantsCount;
-    uint public menuItensCount;
+    uint public restaurantsCount = 0;
+    uint public menuItensCount = 0;
 
 
-    function addRestaurant (string memory _name,string memory _location, string memory _url) public {
+    function addRestaurant (string memory _name,string memory _location, string memory _description,string memory _url) public {
+    restaurants[restaurantsCount] = Restaurant(restaurantsCount, _name, _location,_description,_url,0,true);
     restaurantsCount++;
-    restaurants[restaurantsCount] = Restaurant(restaurantsCount, _name, _location,0,_url);
     }
 
-    function addMenuItem (uint _restaurantId,string memory _name,string memory _description,uint _price) public {
+    function addMenuItem (uint _restaurantId,string memory _name,string memory _description,uint _price, string memory _url) public {
+    require(restaurants[_restaurantId].exists);
+    menuItens[menuItensCount] = MenuItem(menuItensCount, _restaurantId, _name, _description, _price, _url);
     menuItensCount++;
     restaurants[_restaurantId].menuCount++;
-    menuItens[menuItensCount] = MenuItem(menuItensCount, _restaurantId, _name, _description, _price);
     }
 
     function getRestaurants() public view returns (Restaurant[] memory){
+
         Restaurant[] memory itens = new Restaurant[](restaurantsCount);
-        for(uint i=1;i<=restaurantsCount;i++){
-            itens[i-1] = restaurants[i];
+        for(uint i=0;i<restaurantsCount;i++){
+            itens[i] = restaurants[i];
         }
         return itens;
 
     }
 
     function getRestaurantMenu (uint _restaurantId) public view returns (MenuItem[] memory){
+
         MenuItem[] memory itens = new MenuItem[](restaurants[_restaurantId].menuCount);
-        for(uint i=1;i<=menuItensCount;i++){
+        uint counter = 0;
+        for(uint i=0;i<menuItensCount;i++){
             if(menuItens[i].restaurantId == _restaurantId){
-                itens[i-1] = menuItens[i];
+                itens[counter] = menuItens[i];
+                counter++;
             }
         }
         return itens;
+    
 
     }
 
