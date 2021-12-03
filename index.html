@@ -7,6 +7,9 @@
 		.d-flex {
 			margin-top: 40px;
 		}
+		h1{
+			display: block;
+		}
 
 		.list-group {
 			height: 500px;
@@ -14,10 +17,6 @@
 			margin-bottom: 10px;
 			overflow:auto;
 			-webkit-overflow-scrolling: touch;
-		}
-
-		.colorbg {
-			background-color: rgb(255, 181, 158);
 		}
 
 		.roundedImage {
@@ -33,7 +32,7 @@
     <body>
 
 		<div class="container">
-			<div class="d-flex justify-content-sm-center ">
+			<div class="d-flex justify-content-sm-center " style="margin-bottom: 50px;">
 				<h1>BLOCKFOOD</h1>
 			</div>
 			<div class="row justify-content-end align-self-center colorbg">
@@ -44,10 +43,11 @@
 					<button class="btn btn-outline-primary float-end" onclick="showRestaurantForm()">Add. restaurante</button>
 				</div>
 			</div>
+			<hr/>
 			<div class="d-flex justify-content-center" id="restaurant-form">
 				<form id="new-restaurant-form" class="col-4 align-self-center">
 					<div class="form-group">
-						<label for="restaurantName">Nome do Restaurante</label>
+						<label for="restaurantName">Nome do restaurante</label>
 						<input type="text" class="form-control" id="restaurantName" name="name">
 					</div>
 					<div class="form-group">
@@ -59,7 +59,7 @@
 						<input type="text" class="form-control" id="restaurantDescription" name="description">
 					</div>
 					<div class="form-group">
-						<label for="restaurantImageURL">imagem (URL)</label>
+						<label for="restaurantImageURL">URL da imagem</label>
 						<input type="url" class="form-control" id="restaurantImageURL" name="imageURL">
 					</div>
 					<div class="row justify-content-around ">
@@ -80,13 +80,65 @@
 			<div class="d-flex justify-content-sm-center">
 				<ul id="restaurants" class="list-group list-group-horizontal li-container"></ul> 
 			</div>
-			<div class="d-flex justify-content-sm-center colorbg" >
-				<h2 id="cardapio"></h2>
+
+
+
+
+			<div class="d-flex justify-content-center" id="dish-form">
+				<form id="new-dish-form" class="col-4 align-self-center">
+					<div class="form-group">
+						<label for="dishRestaurantId">Id do restaurante</label>
+						<input type="text" class="form-control" id="dishRestaurantId" name="restaurantId" readonly>
+					</div>
+
+					<div class="form-group">
+						<label for="dishName">Nome do prato</label>
+						<input type="text" class="form-control" id="dishName" name="name">
+					</div>
+
+					<div class="form-group">
+						<label for="dishDescription">Descrição</label>
+						<input type="text" class="form-control" id="dishDescription" name="description">
+					</div>
+
+					<div class="form-group">
+						<label for="dishPrice">Preço</label>
+						<input type="number" step="1" min="1" class="form-control" id="dishPrice" name="price">
+					</div>
+
+					<div class="form-group">
+						<label for="dishImageURL">URL da imagem</label>
+						<input type="url" class="form-control" id="dishImageURL" name="imageURL">
+					</div>
+
+					<div class="row justify-content-around ">
+						<button 
+							type="button" 
+							class="btn btn-outline-danger col-5" 
+							style="margin-top: 10px;" 
+							onclick="hideDishForm()">Cancelar</button>
+						<button 
+							type="button" 
+							class="btn btn-outline-primary col-5" 
+							style="margin-top: 10px;"
+							onclick="registerDish()">Cadastrar</button>
+					
+					</div>
+					</form>
 			</div>
+
+			<div class="d-flex justify-content-sm-center colorbg" id="cardapio-wrapper">
+				<h2 id="cardapio">&ThinSpace;</h2>
+			</div>
+			<hr id="cardapio-hr"/>
 			<div class="d-flex justify-content-sm-center">
 				<ul id="dishes" class="list-group list-group-horizontal li-container"></ul>
 			</div>
-			
+			<footer>
+				<div class="d-flex justify-content-center">
+					<p>&copy; 2021 - Todos os direitos reservados</p>
+				</div>
+			</footer>
 		</div>
 
 		<!-- To use web3, jquery and materialize (for toast warnings) libs -->
@@ -98,8 +150,10 @@
 			var contract;
 
             $(document).ready(function(){
-				hideRestaurantForm()
-
+				hideRestaurantForm();
+				hideDishForm();
+				$("#cardapio").empty();
+				$("#cardapio-hr").hide();
 				// making conection with blockchain
 				if (typeof web3 !== 'undefined') {
                     // Use MetaMask's provider
@@ -450,6 +504,29 @@
 				})
 				console.log(data)
 			}
+			function addNewDish(restaurantId){
+				$('#new-dish-form input[name="restaurantId"]').val(restaurantId);
+				$('#new-dish-form').show();
+			}
+			function hideDishForm(){
+				$('#new-dish-form').hide();
+			}
+
+			function registerDish(){
+				var data = $('#new-dish-form').serializeArray().reduce(function(obj, item) {
+					obj[item.name] = item.value;
+					return obj;
+				}, {});
+				web3.eth.getAccounts().then(function(accounts){
+					contract.methods.addMenuItem(data.restaurantId, data.name, data.description, data.price, data.imageURL).send({from: accounts[0]})
+					.then(function(res){
+						hideDishForm();
+						console.log(res);
+					})
+				})
+				console.log(data)
+			}
+
 			function hideRestaurantForm() {
 				$("#new-restaurant-form").hide();
 			}
@@ -483,11 +560,19 @@
 							<div class="card-body">
 								<h5 class="card-title">${restaurant.name}</h5>
 								<p class="card-text" style="height:60px;">${restaurant.description}</p>
-								<button  
-									class="btn btn-outline-primary btn-block"
-									type="button"
-									onclick="getRestaurantDishes(${restaurant.id})"
-									>Veja os pratos</button>
+								<div class="row justify-content-around ">
+
+									<button  
+										class="btn btn-outline-primary btn-block col-6"
+										type="button"
+										onclick="addNewDish(${restaurant.id})"
+										>Add. prato</button>
+									<button  
+										class="btn btn-outline-primary btn-block col-6"
+										type="button"
+										onclick="getRestaurantDishes(${restaurant.id})"
+										>Veja os pratos</button>
+								</div>
 							</div>
 						</div>
 						</li>`
@@ -499,9 +584,12 @@
 					console.log(res);
 					$("#dishes").empty();
 					$("#cardapio").empty();
+					$("#cardapio-hr").hide();
 					if (res.length == 0){
+						$("#cardapio-hr").show();
 						$("#cardapio").html("Não há pratos para este restaurante");
 					}else{
+						$("#cardapio-hr").show();
 						$("#cardapio").html("Cardápio");
 					}
 					for(i=0;i< res.length;i++){
