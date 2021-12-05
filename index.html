@@ -12,8 +12,8 @@
 		}
 
 		.list-group {
-			height: 500px;
-			max-height: 500px;
+			height: 520px;
+			max-height: 520px;
 			margin-bottom: 10px;
 			overflow:auto;
 			-webkit-overflow-scrolling: touch;
@@ -127,13 +127,106 @@
 					</form>
 			</div>
 
+			<div class="d-flex justify-content-center" id="edit-restaurant-form-div">
+				<form id="edit-restaurant-form" class="col-4 align-self-center">
+					<div class="form-group">
+						<label for="RestaurantId">Id do restaurante</label>
+						<input type="text" class="form-control" id="RestaurantId" name="restaurantId" readonly>
+					</div>
+
+					<div class="form-group">
+						<label for="RestaurantName">Nome do restaurante</label>
+						<input type="text" class="form-control" id="RestaurantName" name="name">
+					</div>
+
+					<div class="form-group">
+						<label for="RestaurantPrice">Localização</label>
+						<input type="text" class="form-control" id="RestaurantLocation" name="location">
+					</div>
+
+					<div class="form-group">
+						<label for="RestaurantDescription">Descrição</label>
+						<input type="text" class="form-control" id="RestaurantDescription" name="description">
+					</div>
+
+					<div class="form-group">
+						<label for="RestaurantImageURL">URL da imagem</label>
+						<input type="url" class="form-control" id="RestaurantImageURL" name="imageURL">
+					</div>
+
+					<div class="row justify-content-around ">
+						<button 
+							type="button" 
+							class="btn btn-outline-danger col-5" 
+							style="margin-top: 10px;" 
+							onclick="hideEditRestaurantForm()">Cancelar</button>
+						<button 
+							type="button" 
+							class="btn btn-outline-primary col-5" 
+							style="margin-top: 10px;"
+							onclick="registerEditRestaurant()">Editar</button>
+					
+					</div>
+					</form>
+			</div>
+
 			<div class="d-flex justify-content-sm-center colorbg" id="cardapio-wrapper">
 				<h2 id="cardapio">&ThinSpace;</h2>
 			</div>
 			<hr id="cardapio-hr"/>
+
 			<div class="d-flex justify-content-sm-center">
 				<ul id="dishes" class="list-group list-group-horizontal li-container"></ul>
 			</div>
+
+			<div class="d-flex justify-content-center" id="edit-dish-form-div">
+				<form id="edit-dish-form" class="col-4 align-self-center">
+					<div class="form-group">
+						<label for="dishId">Id do prato</label>
+						<input type="text" class="form-control" id="dishId" name="dishId" readonly>
+					</div>
+
+					<div class="form-group">
+						<label for="dishRestaurantId">Id do restaurante</label>
+						<input type="text" class="form-control" id="dishRestaurantId" name="restaurantId" readonly>
+					</div>
+
+					<div class="form-group">
+						<label for="dishName">Nome do prato</label>
+						<input type="text" class="form-control" id="dishName" name="name">
+					</div>
+
+					<div class="form-group">
+						<label for="dishDescription">Descrição</label>
+						<input type="text" class="form-control" id="dishDescription" name="description">
+					</div>
+
+					<div class="form-group">
+						<label for="dishPrice">Preço</label>
+						<input type="number" step="1" min="1" class="form-control" id="dishPrice" name="price">
+					</div>
+
+					<div class="form-group">
+						<label for="dishImageURL">URL da imagem</label>
+						<input type="url" class="form-control" id="dishImageURL" name="imageURL">
+					</div>
+
+					<div class="row justify-content-around ">
+						<button 
+							type="button" 
+							class="btn btn-outline-danger col-5" 
+							style="margin-top: 10px;" 
+							onclick="hideEditDishForm()">Cancelar</button>
+						<button 
+							type="button" 
+							class="btn btn-outline-primary col-5" 
+							style="margin-top: 10px;"
+							onclick="registerEditDish()">Editar</button>
+					
+					</div>
+					</form>
+			</div>
+
 			<footer>
 				<div class="d-flex justify-content-center">
 					<p>&copy; 2021 - Todos os direitos reservados</p>
@@ -152,6 +245,8 @@
             $(document).ready(function(){
 				hideRestaurantForm();
 				hideDishForm();
+				hideEditRestaurantForm();
+				hideEditDishForm()
 				$("#cardapio").empty();
 				$("#cardapio-hr").hide();
 				// making conection with blockchain
@@ -186,9 +281,9 @@
 				/////////////////////////////
 				// Sample of a contract's address deployed in Ropsten test network
 				//  var address = "0xAdbe5b018CA9C10CC46f45fb9B06Fb454B4e3613"
-				 var address = "0x0F320405fFcf2D4E815588DB382e6e449e546C1c" // local blockchain
+				 var address = "0xa18461fDdd9b9488243695e9B574851921e14d43" // local blockchain
 				// Deployed Contract's Adress, substitute here with your contract's address
-				// var address = "0x28AFe8b25402d4Ddfc6847cB5cd319Cc01E3Df41"
+				// var address = "0x6C8D5d0d636527f2153ba131fD23e5CAc6f39586"
 				$('#address').html(address)
 				// Deployed Contract's ABI
 				var abi =[
@@ -289,6 +384,11 @@
 			{
 				"internalType": "string",
 				"name": "_name",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_description",
 				"type": "string"
 			},
 			{
@@ -637,6 +737,32 @@
 				console.log(data)
 			}
 
+			function editRestaurant(restaurantId){
+				$('#edit-restaurant-form input[name="restaurantId"]').val(restaurantId);
+				$('#edit-restaurant-form').show();
+			}
+
+			function hideEditRestaurantForm(){
+				$('#edit-restaurant-form').hide();
+			}
+
+
+			function registerEditRestaurant(){
+				var data = $('#edit-restaurant-form').serializeArray().reduce(function(obj, item) {
+					obj[item.name] = item.value;
+					return obj;
+				}, {});
+				web3.eth.getAccounts().then(function(accounts){
+					contract.methods.editRestaurant(data.restaurantId, data.name, data.location ,data.description, data.imageURL).send({from: accounts[0]})
+					.then(function(res){
+						hideEditRestaurantForm();
+						getRestaurants();
+						console.log(res);
+					})
+				})
+				console.log(data)
+			}
+
 			function hideRestaurantForm() {
 				$("#new-restaurant-form").hide();
 			}
@@ -682,6 +808,16 @@
 										type="button"
 										onclick="getRestaurantDishes(${restaurant.id})"
 										>Veja os pratos</button>
+									<button  
+										class="btn btn-outline-primary btn-block col-6"
+										type="button"
+										onclick="editRestaurant(${restaurant.id})"
+										>Edit. Rest.</button>
+									<button  
+										class="btn btn-outline-primary btn-block col-6"
+										type="button"
+										onclick="deleteRestaurant(${restaurant.id})"
+										>Excluir Rest.</button>
 								</div>
 							</div>
 						</div>
@@ -709,6 +845,16 @@
 				})
 			}
 
+			function deleteRestaurant(id){
+				web3.eth.getAccounts().then(function(accounts){
+					contract.methods.deleteRestaurant(id).send({from: accounts[0]})
+					.then(function(res){
+						console.log(res);
+						getRestaurants();
+					})
+				})
+			}
+
 			function createDishCard(dish){
 				card = `
 						<li class="list-group-item">
@@ -721,11 +867,60 @@
 									class="btn btn-outline-primary btn-block"
 									type="button"
 									>Comprar</button>
+									<button  
+										class="btn btn-outline-primary btn-block col-6"
+										type="button"
+										onclick="editDish(${dish.id},${dish.restaurantId})"
+										>Editar Prato</button>
+									<button  
+										class="btn btn-outline-primary btn-block col-6"
+										type="button"
+										onclick="deleteDish(${dish.id},${dish.restaurantId})"
+										>Excluir Prato</button>
 							</div>
 						</div>
 						</li>`
 				$("#dishes").append(card);
 			}
+
+
+			function editDish(id,restaurantId){
+				$('#edit-dish-form input[name="dishId"]').val(id);
+				$('#edit-dish-form input[name="restaurantId"]').val(restaurantId);
+				$('#edit-dish-form').show();
+			}
+
+			function hideEditDishForm(){
+				$('#edit-dish-form').hide();
+			}
+
+
+			function registerEditDish(){
+				var data = $('#edit-dish-form').serializeArray().reduce(function(obj, item) {
+					obj[item.name] = item.value;
+					return obj;
+				}, {});
+				web3.eth.getAccounts().then(function(accounts){
+					contract.methods.editMenuItem(data.dishId, data.name,data.description,data.price, data.imageURL).send({from: accounts[0]})
+					.then(function(res){
+						hideEditDishForm();
+						getRestaurantDishes(data.restaurantId);
+						console.log(res);
+					})
+				})
+				console.log(data)
+			}
+
+			function deleteDish(id,restaurantId){
+				web3.eth.getAccounts().then(function(accounts){
+					contract.methods.deleteMenuItem(id).send({from: accounts[0]})
+					.then(function(res){
+						console.log(res);
+						getRestaurantDishes(restaurantId);
+					})
+				})
+			}
+
 				// function getRestaurantMenu(id){
 				// 	contract.methods.getRestaurantMenu(id).call().then(function(res){
 				// 		return console.log(res);
