@@ -82,9 +82,10 @@ contract Delivery {
         restaurants[_restaurantId].imageURL = _url;
     }
 
-    function editMenuItem(uint _menuItemId,string memory _name,uint _price, string memory _url) public {
+    function editMenuItem(uint _menuItemId,string memory _name,string memory _description,uint _price, string memory _url) public {
         require( menuItens[_menuItemId].exists);
         menuItens[_menuItemId].name = _name;
+        menuItens[_menuItemId].description = _description;
         menuItens[_menuItemId].price = _price;
         menuItens[_menuItemId].imageURL = _url;
     }
